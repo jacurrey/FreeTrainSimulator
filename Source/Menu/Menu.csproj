@@ -9,7 +9,8 @@
     <ApplicationIcon>..\FTS.ico</ApplicationIcon>
     <RootNamespace>FreeTrainSimulator.Menu</RootNamespace>
     <Configurations>Debug;Release;CodeAnalysis</Configurations>
-  </PropertyGroup>
+		<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.1" />

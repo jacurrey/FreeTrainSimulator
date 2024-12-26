@@ -9,7 +9,8 @@
     <RootNamespace>FreeTrainSimulator.Updater</RootNamespace>
     <ApplicationIcon>..\FTS.ico</ApplicationIcon>
     <Configurations>Debug;Release;CodeAnalysis</Configurations>
-  </PropertyGroup>
+		<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GetText.NET" Version="8.0.5" />
     <PackageReference Include="GetText.NET.WindowsForms" Version="8.0.5" />
