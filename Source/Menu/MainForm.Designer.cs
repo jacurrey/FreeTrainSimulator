@@ -67,7 +67,6 @@ namespace FreeTrainSimulator.Menu
             label7 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             comboBoxStartTime = new System.Windows.Forms.ComboBox();
-            linkLabelUpdate = new System.Windows.Forms.LinkLabel();
             testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             contextMenuStripTools = new System.Windows.Forms.ContextMenuStrip(components);
             contextMenuStripDocuments = new System.Windows.Forms.ContextMenuStrip(components);
@@ -78,7 +77,18 @@ namespace FreeTrainSimulator.Menu
             panelActivityTypeSelections = new System.Windows.Forms.Panel();
             radioButtonModeTimetable = new System.Windows.Forms.RadioButton();
             radioButtonModeActivity = new System.Windows.Forms.RadioButton();
-            linkLabelWhatsNew = new System.Windows.Forms.LinkLabel();
+            toolStripTopMenu = new System.Windows.Forms.ToolStrip();
+            toolLabelProfile = new System.Windows.Forms.ToolStripLabel();
+            toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripButtonProfileAdd = new System.Windows.Forms.ToolStripButton();
+            toolStripButtonProfileCopy = new System.Windows.Forms.ToolStripButton();
+            toolStripButtonProfileDelete = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripLabelSpace = new System.Windows.Forms.ToolStripLabel();
+            toolStripButtonUpdate = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripLabelNews = new System.Windows.Forms.ToolStripLabel();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             panelModeTimetable.SuspendLayout();
@@ -87,6 +97,7 @@ namespace FreeTrainSimulator.Menu
             panelModeActivity.SuspendLayout();
             contextMenuStripTools.SuspendLayout();
             panelActivityTypeSelections.SuspendLayout();
+            toolStripTopMenu.SuspendLayout();
             SuspendLayout();
             // 
             // buttonStart
@@ -166,7 +177,7 @@ namespace FreeTrainSimulator.Menu
             // comboBoxFolder
             // 
             comboBoxFolder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboBoxFolder.Location = new System.Drawing.Point(16, 38);
+            comboBoxFolder.Location = new System.Drawing.Point(16, 52);
             comboBoxFolder.Margin = new System.Windows.Forms.Padding(4);
             comboBoxFolder.Name = "comboBoxFolder";
             comboBoxFolder.Size = new System.Drawing.Size(373, 23);
@@ -176,7 +187,7 @@ namespace FreeTrainSimulator.Menu
             // comboBoxRoute
             // 
             comboBoxRoute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboBoxRoute.Location = new System.Drawing.Point(16, 95);
+            comboBoxRoute.Location = new System.Drawing.Point(16, 100);
             comboBoxRoute.Margin = new System.Windows.Forms.Padding(4);
             comboBoxRoute.Name = "comboBoxRoute";
             comboBoxRoute.Size = new System.Drawing.Size(373, 23);
@@ -186,7 +197,7 @@ namespace FreeTrainSimulator.Menu
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(16, 70);
+            label2.Location = new System.Drawing.Point(16, 80);
             label2.Margin = new System.Windows.Forms.Padding(4);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(41, 15);
@@ -291,7 +302,7 @@ namespace FreeTrainSimulator.Menu
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(16, 12);
+            label1.Location = new System.Drawing.Point(16, 32);
             label1.Margin = new System.Windows.Forms.Padding(4);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(89, 15);
@@ -480,7 +491,7 @@ namespace FreeTrainSimulator.Menu
             // label25
             // 
             label25.AutoSize = true;
-            label25.Location = new System.Drawing.Point(16, 128);
+            label25.Location = new System.Drawing.Point(16, 135);
             label25.Margin = new System.Windows.Forms.Padding(4);
             label25.Name = "label25";
             label25.Size = new System.Drawing.Size(41, 15);
@@ -654,23 +665,6 @@ namespace FreeTrainSimulator.Menu
             comboBoxStartTime.SelectionChangeCommitted += ComboBoxStartTime_SelectionChangeCommitted;
             comboBoxStartTime.TextUpdate += ComboBoxStartTime_TextUpdated;
             // 
-            // linkLabelUpdate
-            // 
-            linkLabelUpdate.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            linkLabelUpdate.AutoSize = true;
-            linkLabelUpdate.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            linkLabelUpdate.Location = new System.Drawing.Point(984, 12);
-            linkLabelUpdate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            linkLabelUpdate.Name = "linkLabelUpdate";
-            linkLabelUpdate.Size = new System.Drawing.Size(109, 15);
-            linkLabelUpdate.TabIndex = 37;
-            linkLabelUpdate.TabStop = true;
-            linkLabelUpdate.Text = "Link to next Update";
-            linkLabelUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            linkLabelUpdate.UseMnemonic = false;
-            linkLabelUpdate.Visible = false;
-            linkLabelUpdate.LinkClicked += LinkLabelUpdate_LinkClicked;
-            // 
             // testingToolStripMenuItem
             // 
             testingToolStripMenuItem.Name = "testingToolStripMenuItem";
@@ -740,7 +734,7 @@ namespace FreeTrainSimulator.Menu
             panelActivityTypeSelections.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             panelActivityTypeSelections.Controls.Add(radioButtonModeTimetable);
             panelActivityTypeSelections.Controls.Add(radioButtonModeActivity);
-            panelActivityTypeSelections.Location = new System.Drawing.Point(13, 147);
+            panelActivityTypeSelections.Location = new System.Drawing.Point(13, 151);
             panelActivityTypeSelections.Margin = new System.Windows.Forms.Padding(4);
             panelActivityTypeSelections.Name = "panelActivityTypeSelections";
             panelActivityTypeSelections.Size = new System.Drawing.Size(377, 29);
@@ -770,23 +764,106 @@ namespace FreeTrainSimulator.Menu
             radioButtonModeActivity.UseVisualStyleBackColor = true;
             radioButtonModeActivity.CheckedChanged += RadioButtonMode_CheckedChanged;
             // 
-            // linkLabelWhatsNew
+            // toolStripTopMenu
             // 
-            linkLabelWhatsNew.AutoSize = true;
-            linkLabelWhatsNew.Location = new System.Drawing.Point(400, 12);
-            linkLabelWhatsNew.Name = "linkLabelWhatsNew";
-            linkLabelWhatsNew.Size = new System.Drawing.Size(73, 15);
-            linkLabelWhatsNew.TabIndex = 42;
-            linkLabelWhatsNew.TabStop = true;
-            linkLabelWhatsNew.Text = "What's new?";
-            linkLabelWhatsNew.LinkClicked += LinkLabelWhatsNew_LinkClicked;
+            toolStripTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolLabelProfile, toolStripDropDownButton1, toolStripSeparator3, toolStripButtonProfileAdd, toolStripButtonProfileCopy, toolStripButtonProfileDelete, toolStripSeparator1, toolStripLabelSpace, toolStripButtonUpdate, toolStripSeparator2, toolStripLabelNews });
+            toolStripTopMenu.Location = new System.Drawing.Point(0, 0);
+            toolStripTopMenu.Name = "toolStripTopMenu";
+            toolStripTopMenu.Size = new System.Drawing.Size(1139, 25);
+            toolStripTopMenu.TabIndex = 43;
+            toolStripTopMenu.Text = "toolStrip1";
+            // 
+            // toolLabelProfile
+            // 
+            toolLabelProfile.Name = "toolLabelProfile";
+            toolLabelProfile.Size = new System.Drawing.Size(44, 22);
+            toolLabelProfile.Text = "Profile:";
+            // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.AutoSize = false;
+            toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButton1.Image");
+            toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new System.Drawing.Size(120, 22);
+            toolStripDropDownButton1.Text = "Default";
+            toolStripDropDownButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonProfileAdd
+            // 
+            toolStripButtonProfileAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButtonProfileAdd.Image = (System.Drawing.Image)resources.GetObject("toolStripButtonProfileAdd.Image");
+            toolStripButtonProfileAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonProfileAdd.Name = "toolStripButtonProfileAdd";
+            toolStripButtonProfileAdd.Size = new System.Drawing.Size(23, 22);
+            toolStripButtonProfileAdd.Text = "Create new profile";
+            // 
+            // toolStripButtonProfileCopy
+            // 
+            toolStripButtonProfileCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButtonProfileCopy.Image = (System.Drawing.Image)resources.GetObject("toolStripButtonProfileCopy.Image");
+            toolStripButtonProfileCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonProfileCopy.Name = "toolStripButtonProfileCopy";
+            toolStripButtonProfileCopy.Size = new System.Drawing.Size(23, 22);
+            toolStripButtonProfileCopy.Text = "Duplicate selected profile";
+            // 
+            // toolStripButtonProfileDelete
+            // 
+            toolStripButtonProfileDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButtonProfileDelete.Image = (System.Drawing.Image)resources.GetObject("toolStripButtonProfileDelete.Image");
+            toolStripButtonProfileDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonProfileDelete.Name = "toolStripButtonProfileDelete";
+            toolStripButtonProfileDelete.Size = new System.Drawing.Size(23, 22);
+            toolStripButtonProfileDelete.Text = "Delete selected profile";
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabelSpace
+            // 
+            toolStripLabelSpace.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            toolStripLabelSpace.AutoSize = false;
+            toolStripLabelSpace.Name = "toolStripLabelSpace";
+            toolStripLabelSpace.Size = new System.Drawing.Size(20, 22);
+            // 
+            // toolStripButtonUpdate
+            // 
+            toolStripButtonUpdate.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            toolStripButtonUpdate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonUpdate.Name = "toolStripButtonUpdate";
+            toolStripButtonUpdate.Size = new System.Drawing.Size(116, 22);
+            toolStripButtonUpdate.Text = "No update available";
+            toolStripButtonUpdate.Click += ToolStripButtonUpdate_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabelNews
+            // 
+            toolStripLabelNews.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            toolStripLabelNews.IsLink = true;
+            toolStripLabelNews.Name = "toolStripLabelNews";
+            toolStripLabelNews.Size = new System.Drawing.Size(36, 22);
+            toolStripLabelNews.Text = "News";
+            toolStripLabelNews.Click += ToolStripLabelNews_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1139, 674);
-            Controls.Add(linkLabelWhatsNew);
+            Controls.Add(toolStripTopMenu);
             Controls.Add(panelActivityTypeSelections);
             Controls.Add(comboBoxStartWeather);
             Controls.Add(label12);
@@ -805,7 +882,6 @@ namespace FreeTrainSimulator.Menu
             Controls.Add(pictureBoxLogo);
             Controls.Add(labelLogo);
             Controls.Add(label2);
-            Controls.Add(linkLabelUpdate);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
@@ -828,6 +904,8 @@ namespace FreeTrainSimulator.Menu
             panelModeActivity.PerformLayout();
             contextMenuStripTools.ResumeLayout(false);
             panelActivityTypeSelections.ResumeLayout(false);
+            toolStripTopMenu.ResumeLayout(false);
+            toolStripTopMenu.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -876,7 +954,6 @@ namespace FreeTrainSimulator.Menu
         private System.Windows.Forms.ComboBox comboBoxTimetable;
         private System.Windows.Forms.ComboBox comboBoxTimetableSet;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.LinkLabel linkLabelUpdate;
         private System.Windows.Forms.ToolStripMenuItem testingToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripTools;
         private System.Windows.Forms.Button buttonDocuments;
@@ -892,6 +969,17 @@ namespace FreeTrainSimulator.Menu
         private System.Windows.Forms.Panel panelActivityTypeSelections;
         private System.Windows.Forms.RadioButton radioButtonModeTimetable;
         private System.Windows.Forms.RadioButton radioButtonModeActivity;
-        private System.Windows.Forms.LinkLabel linkLabelWhatsNew;
+        private System.Windows.Forms.ToolStrip toolStripTopMenu;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonProfileAdd;
+        private System.Windows.Forms.ToolStripButton toolStripButtonProfileCopy;
+        private System.Windows.Forms.ToolStripButton toolStripButtonProfileDelete;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabelNews;
+        private System.Windows.Forms.ToolStripLabel toolLabelProfile;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButtonUpdate;
+        private System.Windows.Forms.ToolStripLabel toolStripLabelSpace;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

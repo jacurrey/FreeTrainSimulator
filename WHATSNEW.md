@@ -1,6 +1,7 @@
 # New in this version
 
 ## Features
+- Profile selections in Menu application allowing to have different setting profiles
 - Direct link in Menu application to this "What's New" page
 - Import existing content folder settings
 - Analyze content during import for duplicates and other content errors

@@ -35,8 +35,9 @@ using FreeTrainSimulator.Common;
 using FreeTrainSimulator.Common.Info;
 using FreeTrainSimulator.Common.Logging;
 using FreeTrainSimulator.Models.Content;
-using FreeTrainSimulator.Models.Shim;
 using FreeTrainSimulator.Models.Imported.Shim;
+using FreeTrainSimulator.Models.Settings;
+using FreeTrainSimulator.Models.Shim;
 using FreeTrainSimulator.Online.Client;
 using FreeTrainSimulator.Updater;
 
@@ -44,7 +45,6 @@ using GetText;
 using GetText.WindowsForms;
 
 using Orts.Settings;
-using FreeTrainSimulator.Models.Settings;
 
 namespace FreeTrainSimulator.Menu
 {
@@ -74,6 +74,7 @@ namespace FreeTrainSimulator.Menu
         private readonly ResourceManager resources = new ResourceManager("FreeTrainSimulator.Menu.Properties.Resources", typeof(MainForm).Assembly);
         private UpdateManager updateManager;
         private readonly Image elevationIcon;
+        private readonly string whatsNewLink;
 
         #region current selection to be passed a startup parameters
         internal ProfileModel SelectedProfile { get; private set; }
@@ -101,6 +102,7 @@ namespace FreeTrainSimulator.Menu
                 elevationIcon = icon.ToBitmap();
 
             CatalogManager.SetCatalogDomainPattern(CatalogDomainPattern.AssemblyName, null, RuntimeInfo.LocalesFolder);
+            whatsNewLink = RuntimeInfo.WhatsNewLinkTemplate.Replace("gitcodeversion", VersionInfo.CodeVersion, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -142,15 +144,11 @@ namespace FreeTrainSimulator.Menu
 
             updateManager = new UpdateManager(settings);
 
-            linkLabelWhatsNew.Tag = RuntimeInfo.WhatsNewLinkTemplate.Replace("gitcodeversion", VersionInfo.CodeVersion, StringComparison.OrdinalIgnoreCase);
             Task profileTask = ProfileChanged(currentProfile);
 
-            linkLabelUpdate.Visible = false;
             LoadLanguage();
             LoadOptions();
-            Task updateTask = Task.CompletedTask;
-
-            updateTask = CheckForUpdateAsync();
+            Task updateTask = CheckForUpdateAsync();
             LoadToolsAndDocuments();
 
             comboBoxStartTime.DataSourceFromList(Enumerable.Range(0, 24), (hour) => $"{hour:00}:00:00");
@@ -158,14 +156,16 @@ namespace FreeTrainSimulator.Menu
             comboBoxStartWeather.DataSourceFromEnum<WeatherType>();
             comboBoxTimetableDay.DataSourceFromList(Enumerable.Range(0, 7), (day) => CultureInfo.CurrentUICulture.DateTimeFormat.DayNames[day]);
 
-            await Task.WhenAll(profileTask, updateTask).ConfigureAwait(true);
-
             UpdateEnabled();
+            await Task.WhenAll(profileTask, updateTask).ConfigureAwait(true);
         }
 
         private async Task<ProfileModel> LoadSettings()
         {
             ctsProfileLoading = await ctsProfileLoading.ResetCancellationTokenSource(semaphoreSlim, true).ConfigureAwait(false);
+
+            FrozenSet<ProfileModel> profiles = await SelectedProfile.GetProfiles(ctsProfileLoading.Token).ConfigureAwait(true);
+            SetupProfilesDropdown(profiles);
 
             ProfileModel currentProfile = await SelectedProfile.Current(ctsProfileLoading.Token).ConfigureAwait(false);
             ProfileUserSettings = await currentProfile.LoadSettingsModel<ProfileUserSettingsModel>(ctsProfileLoading.Token).ConfigureAwait(false);
@@ -260,26 +260,23 @@ namespace FreeTrainSimulator.Menu
             string availableVersion = await updateManager.GetBestAvailableVersionString(false).ConfigureAwait(true);
             if (updateManager.LastCheckError != null)
             {
-                linkLabelUpdate.Text = catalog.GetString("Update check failed");
-                linkLabelUpdate.Visible = true;
-                linkLabelUpdate.Tag = null;
+                toolStripButtonUpdate.Text = catalog.GetString("Update check failed");
+                toolStripButtonUpdate.Visible = true;
+                toolStripButtonUpdate.Tag = null;
+                toolStripButtonUpdate.Image = null;
             }
             else
             {
                 if (!string.IsNullOrEmpty(availableVersion))
                 {
-                    linkLabelUpdate.Text = catalog.GetString($"Update to {UpdateManager.NormalizedPackageVersion(availableVersion)}");
-                    linkLabelUpdate.Tag = availableVersion;
-                    linkLabelUpdate.Visible = true;
-                    linkLabelUpdate.Image = updateManager.UpdaterNeedsElevation ? elevationIcon : null;
-                    linkLabelUpdate.AutoSize = true;
-                    linkLabelUpdate.Left = panelDetails.Right - linkLabelUpdate.Width - elevationIcon.Width;
-                    linkLabelUpdate.AutoSize = false;
-                    linkLabelUpdate.Width = panelDetails.Right - linkLabelUpdate.Left;
+                    toolStripButtonUpdate.Text = catalog.GetString($"Update to {UpdateManager.NormalizedPackageVersion(availableVersion)}");
+                    toolStripButtonUpdate.Tag = availableVersion;
+                    toolStripButtonUpdate.Visible = true;
+                    toolStripButtonUpdate.Image = updateManager.UpdaterNeedsElevation ? elevationIcon : null;
                 }
                 else
                 {
-                    linkLabelUpdate.Visible = false;
+                    toolStripButtonUpdate.Text = catalog.GetString($"No updates available");
                 }
             }
         }
@@ -456,26 +453,6 @@ namespace FreeTrainSimulator.Menu
         #endregion
 
         #region Misc. buttons and options
-        private async void LinkLabelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (updateManager.LastCheckError != null)
-            {
-                MessageBox.Show(catalog.GetString($"The update check failed due to an error:\n\n{updateManager.LastCheckError.Message} {updateManager.LastCheckError.InnerException?.Message}"), RuntimeInfo.ProductName);
-                return;
-            }
-
-            try
-            {
-                await updateManager.RunUpdateProcess(linkLabelUpdate.Tag as string).ConfigureAwait(true);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(catalog.GetString($"The update failed due to an error:\n\n{exception.Message} {exception.InnerException?.Message}"), RuntimeInfo.ProductName);
-                return;
-                throw;
-            }
-        }
-
         private void ButtonTools_Click(object sender, EventArgs e)
         {
             contextMenuStripTools.Show(buttonTools, new Point(0, buttonTools.ClientSize.Height), ToolStripDropDownDirection.Default);
@@ -685,6 +662,56 @@ namespace FreeTrainSimulator.Menu
                 CurrentSelections?.TimetableTrain != null;
             buttonConnectivityTest.Enabled = buttonStartMP.Enabled = buttonStart.Enabled && !string.IsNullOrEmpty(textBoxMPUser.Text) && !string.IsNullOrEmpty(textBoxMPHost.Text);
         }
+        #endregion
+
+        #region profile selections
+        private void SetupProfilesDropdown(FrozenSet<ProfileModel> profiles)
+        {
+            if (InvokeRequired)
+            {
+                _ = Invoke(SetupProfilesDropdown, profiles);
+                return;
+            }
+            toolStripDropDownButton1.DropDownItems.Clear();
+            foreach (ProfileModel profile in profiles.OrderBy(p => p.Name))
+            {
+                ToolStripMenuItem profileItem = new ToolStripMenuItem(profile.Name)
+                {
+                    Tag = profile,
+                };
+                profileItem.Click += ProfileItem_Click;
+                toolStripDropDownButton1.DropDownItems.Add(profileItem);
+            }
+        }
+
+        private async void ProfileItem_Click(object sender, EventArgs e)
+        {
+            await SaveOptions().ConfigureAwait(false);
+            await ProfileChanged((sender as ToolStripMenuItem).Tag as ProfileModel).ConfigureAwait(false);
+        }
+
+        private void UpdateProfilesDropdown(ProfileModel profileModel)
+        {
+            if (profileModel == null)
+                return;
+
+            if (InvokeRequired)
+            {
+                Invoke(UpdateProfilesDropdown, profileModel);
+                return;
+            }
+            foreach (ToolStripMenuItem toolStripMenuItem in toolStripDropDownButton1.DropDownItems)
+            {
+                if (toolStripMenuItem.Tag as ProfileModel == profileModel)
+                {
+                    toolStripMenuItem.Checked = true;
+                    toolStripDropDownButton1.Text = profileModel.Name;
+                }
+                else
+                    toolStripMenuItem.Checked = false;
+            }
+        }
+
         #endregion
 
         #region Activity dropdown selections
@@ -1107,9 +1134,29 @@ namespace FreeTrainSimulator.Menu
         }
         #endregion
 
-        private void LinkLabelWhatsNew_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void ToolStripLabelNews_Click(object sender, EventArgs e)
         {
-            SystemInfo.OpenBrowser(linkLabelWhatsNew.Tag as string);
+            SystemInfo.OpenBrowser(whatsNewLink);
+        }
+
+        private async void ToolStripButtonUpdate_Click(object sender, EventArgs e)
+        {
+            if (updateManager.LastCheckError != null)
+            {
+                MessageBox.Show(catalog.GetString($"The update check failed due to an error:\n\n{updateManager.LastCheckError.Message} {updateManager.LastCheckError.InnerException?.Message}"), RuntimeInfo.ProductName);
+                return;
+            }
+
+            try
+            {
+                await updateManager.RunUpdateProcess(toolStripButtonUpdate.Tag as string).ConfigureAwait(true);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(catalog.GetString($"The update failed due to an error:\n\n{exception.Message} {exception.InnerException?.Message}"), RuntimeInfo.ProductName);
+                return;
+                throw;
+            }
         }
     }
 }

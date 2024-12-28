@@ -24,6 +24,7 @@ namespace FreeTrainSimulator.Menu
 
             ContentModel = await ContentModel.Get(ctsProfileLoading.Token).ConfigureAwait(false);
             SelectedProfile = profileModel;
+            UpdateProfilesDropdown(profileModel);
             CurrentSelections = await SelectedProfile.LoadSettingsModel<ProfileSelectionsModel>(ctsProfileLoading.Token).ConfigureAwait(false);
 
             //Initial setup if necessary
