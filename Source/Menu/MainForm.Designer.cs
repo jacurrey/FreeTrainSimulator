@@ -89,6 +89,7 @@ namespace FreeTrainSimulator.Menu
             toolStripButtonUpdate = new System.Windows.Forms.ToolStripButton();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             toolStripLabelNews = new System.Windows.Forms.ToolStripLabel();
+            toolStripButtonLogFolder = new System.Windows.Forms.ToolStripButton();
             groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             panelModeTimetable.SuspendLayout();
@@ -766,7 +767,7 @@ namespace FreeTrainSimulator.Menu
             // 
             // toolStripTopMenu
             // 
-            toolStripTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolLabelProfile, toolStripDropDownButton1, toolStripSeparator3, toolStripButtonProfileAdd, toolStripButtonProfileCopy, toolStripButtonProfileDelete, toolStripSeparator1, toolStripLabelSpace, toolStripButtonUpdate, toolStripSeparator2, toolStripLabelNews });
+            toolStripTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolLabelProfile, toolStripDropDownButton1, toolStripSeparator3, toolStripButtonProfileAdd, toolStripButtonProfileCopy, toolStripButtonProfileDelete, toolStripSeparator1, toolStripLabelSpace, toolStripButtonUpdate, toolStripSeparator2, toolStripLabelNews, toolStripButtonLogFolder });
             toolStripTopMenu.Location = new System.Drawing.Point(0, 0);
             toolStripTopMenu.Name = "toolStripTopMenu";
             toolStripTopMenu.Size = new System.Drawing.Size(1139, 25);
@@ -789,6 +790,7 @@ namespace FreeTrainSimulator.Menu
             toolStripDropDownButton1.Size = new System.Drawing.Size(120, 22);
             toolStripDropDownButton1.Text = "Default";
             toolStripDropDownButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            toolStripDropDownButton1.ToolTipText = "Selected profile";
             // 
             // toolStripSeparator3
             // 
@@ -857,6 +859,16 @@ namespace FreeTrainSimulator.Menu
             toolStripLabelNews.Size = new System.Drawing.Size(36, 22);
             toolStripLabelNews.Text = "News";
             toolStripLabelNews.Click += ToolStripLabelNews_Click;
+            // 
+            // toolStripButtonLogFolder
+            // 
+            toolStripButtonLogFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButtonLogFolder.Image = (System.Drawing.Image)resources.GetObject("toolStripButtonLogFolder.Image");
+            toolStripButtonLogFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonLogFolder.Name = "toolStripButtonLogFolder";
+            toolStripButtonLogFolder.Size = new System.Drawing.Size(23, 22);
+            toolStripButtonLogFolder.Text = "Open Log file location";
+            toolStripButtonLogFolder.Click += ToolStripButtonLogFolder_Click;
             // 
             // MainForm
             // 
@@ -981,5 +993,6 @@ namespace FreeTrainSimulator.Menu
         private System.Windows.Forms.ToolStripButton toolStripButtonUpdate;
         private System.Windows.Forms.ToolStripLabel toolStripLabelSpace;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLogFolder;
     }
 }

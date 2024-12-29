@@ -1,6 +1,7 @@
 ﻿using System;
 
 using FreeTrainSimulator.Common;
+using FreeTrainSimulator.Common.Info;
 using FreeTrainSimulator.Models.Base;
 
 using MemoryPack;
@@ -15,7 +16,7 @@ namespace FreeTrainSimulator.Models.Settings
 
         public TraceSettings LogLevel { get; set; } = TraceSettings.Errors;
         public string LogFileName { get; set; } = "{Product} {Application} Log.txt";
-        public string LogFilePath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        public string LogFilePath { get; set; } = RuntimeInfo.LogFilesFolder;
 
         public string Language { get; set; }
 

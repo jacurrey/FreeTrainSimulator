@@ -19,8 +19,6 @@ using FreeTrainSimulator.Graphics.DrawableComponents;
 using FreeTrainSimulator.Graphics.MapView;
 using FreeTrainSimulator.Graphics.Window;
 using FreeTrainSimulator.Graphics.Xna;
-using FreeTrainSimulator.Models.Content;
-using FreeTrainSimulator.Models.Handler;
 using FreeTrainSimulator.Models.Settings;
 using FreeTrainSimulator.Models.Shim;
 using FreeTrainSimulator.Toolbox.PopupWindows;

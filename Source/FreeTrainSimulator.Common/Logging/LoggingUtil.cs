@@ -61,7 +61,7 @@ namespace FreeTrainSimulator.Common.Logging
                 if (!appendLog)
                     File.Delete(logFileName);
             }
-            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is ArgumentException || ex is IOException || ex is DirectoryNotFoundException)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is ArgumentException || ex is IOException)
             {
             }
 
@@ -78,7 +78,7 @@ namespace FreeTrainSimulator.Common.Logging
                 };
                 Trace.Listeners.Add(traceListener);
             }
-            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is ArgumentException || ex is IOException || ex is DirectoryNotFoundException)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is ArgumentException || ex is IOException)
             {
             }
 

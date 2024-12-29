@@ -40,15 +40,16 @@ namespace FreeTrainSimulator.Common.Info
         /// </summary>
         public static string ApplicationFolder { get; } = AppContext.BaseDirectory;
 
+
+        public static string UserDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProductName);
         /// <summary>
         /// returns the .config directory in the <see cref="ApplicationFolder"/>
         /// </summary>
-        public static string ConfigFolder { get; } = Path.Combine(ApplicationFolder, ".config");
+        public static string ConfigFolder { get; } = Path.Combine(UserDataFolder, ".config");
 
         public static string ContentFolder { get; } = Path.Combine(ApplicationFolder, "content");
 
-        public static string UserDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProductName);
-
+        public static string LogFilesFolder { get; } = Path.Combine(UserDataFolder, "Logs");
         /// <summary>
         /// returns the common program root. While this may be same as <see cref="ApplicationFolder"/>
         /// this is one level up in dual target environment ("Program" for "Program\netcoreapp3.1")
@@ -63,21 +64,12 @@ namespace FreeTrainSimulator.Common.Info
 
         public static string DocumentationFolder { get; } = Path.Combine(ProgramRoot, "Documentation");
 
-        public static string LogFile(string path, string fileNamePattern) => Path.Combine(path, LoggingUtil.CustomizeLogFileName(fileNamePattern));
+        public static string LogFile(string path, string fileNameTemplate) => Path.Combine(path, LoggingUtil.CustomizeLogFileName(fileNameTemplate));
 
         static RuntimeInfo()
         {
-            try
-            {
-                Directory.CreateDirectory(ConfigFolder);
-            }
-            catch (Exception exception) when
-                (exception is IOException || exception is UnauthorizedAccessException)
-            {
-                //we may not be able to write directly to the current appliction folder (self-contained) so we rather use user appdata folder
-                ConfigFolder = Path.Combine(UserDataFolder, ".config");
-                Directory.CreateDirectory(ConfigFolder);
-            }
+            Directory.CreateDirectory(ConfigFolder);
+            Directory.CreateDirectory(LogFilesFolder);
         }
 
         public static string GetCacheFilePath(string cacheType, string key)

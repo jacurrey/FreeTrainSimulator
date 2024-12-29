@@ -1158,5 +1158,10 @@ namespace FreeTrainSimulator.Menu
                 throw;
             }
         }
+
+        private void ToolStripButtonLogFolder_Click(object sender, EventArgs e)
+        {
+            SystemInfo.OpenFolder(ProfileUserSettings.LogFilePath);
+        }
     }
 }

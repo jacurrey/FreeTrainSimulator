@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -136,6 +137,12 @@ namespace FreeTrainSimulator.Common.Info
                 foreach (ManagementObject dataFile in pnpDevice.GetRelated("CIM_DataFile"))
                     output.Append(CultureInfo.InvariantCulture, $" ({dataFile["FileName"]} {dataFile["Version"]})");
             return output.ToString();
+        }
+
+        public static void OpenFolder(string path)
+        {
+            if (Directory.Exists(path))
+                Process.Start(new ProcessStartInfo { FileName = path, UseShellExecute = true, Verb = "explore" });
         }
 
         public static void OpenFile(string fileName)
